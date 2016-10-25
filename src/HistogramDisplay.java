@@ -9,16 +9,20 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.ApplicationFrame;
 
 public class HistogramDisplay extends ApplicationFrame{
+    private final Histogram<String> histogram;
 
-    public HistogramDisplay() {
-        super("HISTROGRAM");
+    public HistogramDisplay(Histogram<String> histogram) {
+        super("HISTOGRAM");
+        this.histogram = histogram;
         setContentPane(createPanel());
         pack();
     }
 
-    public void execute() {
+
+    public void execute(){
         setVisible(true);
     }
+
 
     private JPanel createPanel() {
         ChartPanel chartPanel = new ChartPanel(createChart(createDataSet()));
@@ -26,7 +30,8 @@ public class HistogramDisplay extends ApplicationFrame{
         return chartPanel;
     }
 
-    private JFreeChart createChart(DefaultCategoryDataset dataSet) {
+
+    private JFreeChart createChart(DefaultCategoryDataset dataSet){
         JFreeChart chart = ChartFactory.createBarChart(
                 "JFreeChart Histogram",
                 "Dominio de e-mail",
@@ -39,12 +44,12 @@ public class HistogramDisplay extends ApplicationFrame{
         return chart;
     }
 
+
     private DefaultCategoryDataset createDataSet() {
         DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
-        dataSet.addValue(15, "", "gmail.com");
-        dataSet.addValue(10, "", "hotmail.com");
-        dataSet.addValue(15, "", "outlook.es");
-        dataSet.addValue(20, "", "ulpgc.es");
+        for (String key : histogram.keySet()) {
+            dataSet.addValue(histogram.get(key), "", key);
+        }
         return dataSet;
     }
 }
